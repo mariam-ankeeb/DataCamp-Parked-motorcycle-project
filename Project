@@ -1,0 +1,14 @@
+select product_line , case extract('month' from date) 
+	                  when 6 then 'June'
+                      when 7 then 'July' 
+                      when 8 then 'August'
+                    End as month, warehouse , 
+ ROUND(SUM(total) - SUM(payment_fee), 2) AS net_revenue
+FROM sales
+	where client_type = 'Wholesale'
+	group by product_line ,  CASE EXTRACT(MONTH FROM date)
+        WHEN 6 THEN 'June'
+        WHEN 7 THEN 'July'
+        WHEN 8 THEN 'August'
+    END , warehouse
+order by product_line , month , net_revenue desc
